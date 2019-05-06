@@ -27,10 +27,6 @@ def moon_phase(mDay, mMonth, mYear):
     r = (math.floor(r + 0.5) % 30)
     return r + 30 if r < 0 else r
 
-output_list = []
-
-mh = Adafruit_MotorHAT()
-
 # clean up function for safe termination
 def turnOffMotors():
     mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
@@ -41,9 +37,6 @@ def turnOffMotors():
 # register clean up function
 atexit.register(turnOffMotors)
 
-# gain control of stepper and set its speed
-moon_stepper = mh.getStepper(200,1)
-moon_stepper.setSpeed(3)
 
 # determine how many steps to move and move motor
 def update_phase(current_phase, new_phase):
@@ -71,10 +64,14 @@ def test_phase(i):
 while True:
 #for i in range(27):
 #    new_phase = test_phase(i + 4)
+    mh = Adafruit_MotorHAT()
+    # gain control of stepper and set its speed
+    moon_stepper = mh.getStepper(200,1)
+    moon_stepper.setSpeed(3)
     new_phase = get_new_phase()
     update_phase(current_phase, new_phase)
     print("loop!")
     current_phase = new_phase
-    time.sleep(900)
-
-#wait 15 minutes for next update
+    time.sleep(3)
+    turnOffMotors()
+    time.sleep(900) #wait 15 minutes for next update
