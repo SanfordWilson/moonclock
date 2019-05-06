@@ -6,9 +6,11 @@ from datetime import *
 import math
 import time
 
+ROTATION_CONSTANT = 3.0 + 1.0/3.0
+
 # rotate the motor by a certain number of steps
 def move_the_motor(steps):
-    moon_stepper.step(int(steps * 6.66 + 0.5), Adafruit_MotorHAT.FORWARD, Adafruit_MotorHAT.SINGLE)
+    moon_stepper.step(int(steps * ROTATION_CONSTANT + 0.5), Adafruit_MotorHAT.FORWARD, Adafruit_MotorHAT.SINGLE)
 
 current_phase = 0
 
@@ -58,12 +60,21 @@ def get_new_phase():
     month = date.month
     year = date.year
     return moon_phase(day, month, year)
-    
+
+def test_phase(i):
+    date = datetime.now();
+    day = i
+    month = date.month
+    year = date.year
+    return moon_phase(day, month, year)
+
 while True:
+#for i in range(27):
+#    new_phase = test_phase(i + 4)
     new_phase = get_new_phase()
     update_phase(current_phase, new_phase)
     print("loop!")
     current_phase = new_phase
-    time.sleep(60)
+    time.sleep(900)
 
 #wait 15 minutes for next update
