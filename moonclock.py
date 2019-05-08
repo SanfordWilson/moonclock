@@ -61,17 +61,17 @@ def test_phase(i):
     year = date.year
     return moon_phase(day, month, year)
 
-while True:
-#for i in range(27):
-#    new_phase = test_phase(i + 4)
+#while True:
+for i in range(27):
+    new_phase = test_phase(i + 4)
     mh = Adafruit_MotorHAT()
     # gain control of stepper and set its speed
     moon_stepper = mh.getStepper(200,1)
     moon_stepper.setSpeed(3)
-    new_phase = get_new_phase()
+#    new_phase = get_new_phase()
     update_phase(current_phase, new_phase)
     print("loop!")
     current_phase = new_phase
     time.sleep(3)
-    turnOffMotors()
+    mh.release()
     time.sleep(900) #wait 15 minutes for next update
